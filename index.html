@@ -1,0 +1,493 @@
+<!DOCTYPE html><html class="dark" data-theme="dark" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Painel Financeiro | EAXIS</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from Design System -->
+<script id="tailwind-config" src="js/tailwind-config.js"></script>
+<link rel="stylesheet" href="css/tokens.css">
+
+<link rel="stylesheet" href="css/components.css">
+<!-- Chart.js and XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen w-screen overflow-hidden flex ambient-glow">
+<!-- Background Animation (Placeholder) -->
+<!-- Layout Wrapper -->
+<div class="flex h-full w-full relative z-10">
+<!-- SideNavBar Component -->
+<aside class="h-screen w-64 flex-shrink-0 flex flex-col bg-surface-container/80 backdrop-blur-[18px] border-r border-white/8 shadow-xl p-md gap-sm z-40 hidden md:flex" id="sidebar">
+<!-- Header -->
+<div class="flex items-center gap-sm px-sm py-sm mb-md">
+<img alt="Logo EAXIS" class="w-10 h-10 rounded-lg border border-outline-variant/30" data-alt="A sleek, modern corporate logo icon featuring geometric shapes in deep blue and glowing cyan, set on a dark technical background, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCheyOQjb4aShYVtQLifCLQEZmSkQ_3W1k_KcLi5xXY6qDGo6u7qzEec8cKVAruVASB89TBqF_lusqngnQDV_i3XJWwS79otmbEXH0UDXQIpoBA5NxlIKdBKk3D0UxUDfTBrm42gdkS_BCoUdRfIuCpVUYTQo5hMaMaxRt8L_aXgQH9X7bAtikyPxbbFjcsNrvB9SiK78-ugq5wgodbirplc4pURtYiyeefDv2I4wLRfuBibvKtM0Nj">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-sm font-bold text-on-surface tracking-tighter">EAXIS Finance</span>
+<span class="font-label-sm text-label-xs text-on-surface-variant">Enterprise Suite</span>
+</div>
+</div>
+<!-- CTA -->
+<button class="bg-primary-container text-on-primary-container font-label-sm text-label-sm py-sm px-md rounded-full shadow-lg hover:brightness-110 hover:-translate-y-[1px] transition-all duration-200 mb-md w-full flex items-center justify-center gap-xs" id="btnNewLaunch">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                Novo Lançamento
+            </button>
+<div class="flex flex-col gap-xs flex-1 overflow-y-auto">
+<div class="flex items-center justify-between px-sm pt-sm pb-xs">
+<h3 class="font-label-sm text-label-xs text-on-surface-variant uppercase tracking-wider">Clientes</h3>
+<button class="text-primary hover:text-primary-container" id="btnNewClient" title="Novo Cliente">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+</button>
+</div>
+<div class="flex flex-col px-xs gap-xs" id="clientList">
+<!-- Client List populated by JS -->
+</div>
+</div>
+<!-- Navegação futura (telas ainda não implementadas) -->
+<nav class="flex flex-col gap-xs">
+<span class="flex items-center gap-sm px-sm py-sm text-on-surface-variant/40 rounded-lg font-label-sm text-label-sm cursor-not-allowed" title="Em breve">
+<span class="material-symbols-outlined">payments</span>
+                    Fluxo de Caixa
+                    <span class="ml-auto text-[9px] uppercase tracking-wide border border-outline-variant/40 rounded-full px-2 py-0.5">Em breve</span>
+</span>
+<span class="flex items-center gap-sm px-sm py-sm text-on-surface-variant/40 rounded-lg font-label-sm text-label-sm cursor-not-allowed" title="Em breve">
+<span class="material-symbols-outlined">trending_up</span>
+                    Planejamento
+                    <span class="ml-auto text-[9px] uppercase tracking-wide border border-outline-variant/40 rounded-full px-2 py-0.5">Em breve</span>
+</span>
+<span class="flex items-center gap-sm px-sm py-sm text-on-surface-variant/40 rounded-lg font-label-sm text-label-sm cursor-not-allowed" title="Em breve">
+<span class="material-symbols-outlined">shield</span>
+                    Auditoria e Segurança
+                    <span class="ml-auto text-[9px] uppercase tracking-wide border border-outline-variant/40 rounded-full px-2 py-0.5">Em breve</span>
+</span>
+</nav>
+<!-- Navigation Links (Bottom part) -->
+<nav class="flex flex-col gap-xs mt-auto">
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-variant/50 hover:text-on-surface rounded-lg transition-all font-label-sm text-label-sm" href="#" id="btnHistory">
+<span class="material-symbols-outlined">history</span>
+                    Histórico
+                </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-variant/50 hover:text-on-surface rounded-lg transition-all font-label-sm text-label-sm" href="#" id="btnExportExcel">
+<span class="material-symbols-outlined">download</span>
+                    Exportar Excel
+                </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-variant/50 hover:text-on-surface rounded-lg transition-all font-label-sm text-label-sm" href="#" id="btnBackup">
+<span class="material-symbols-outlined">save</span>
+                    Backup (JSON)
+                </a>
+<label class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-variant/50 hover:text-on-surface rounded-lg transition-all font-label-sm text-label-sm cursor-pointer">
+<span class="material-symbols-outlined">upload</span>
+                    Importar
+                    <input accept=".json" class="hidden" id="fileImport" type="file">
+</label>
+<div class="px-sm text-[10px] text-on-surface-variant/70 leading-tight -mt-1">
+<div id="lastBackupText">Últ. Backup: —</div>
+<div id="lastImportText">Últ. Import: —</div>
+</div>
+<button class="flex items-center gap-sm px-sm py-sm text-error/80 hover:text-error hover:bg-error/10 rounded-lg transition-all font-label-sm text-label-sm text-left" id="btnReset" title="Apaga todos os dados salvos neste navegador">
+<span class="material-symbols-outlined">restart_alt</span>
+                    Resetar tudo
+                </button>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-variant/50 hover:text-on-surface rounded-lg transition-all font-label-sm text-label-sm cursor-pointer" id="btnTheme">
+<span class="material-symbols-outlined">light_mode</span>
+                    Alternar Tema
+                </a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden" id="content">
+<!-- TopNavBar Component -->
+<header class="bg-surface-container/80 backdrop-blur-[18px] flex justify-between items-center w-full px-margin-desktop py-md z-30 border-b border-white/8 shadow-md flex-shrink-0">
+<div class="flex items-center gap-lg">
+<!-- Mobile Menu Toggle (hidden on desktop) -->
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand (Visible primarily on mobile if sidebar hidden, or as secondary branding) -->
+<span class="font-headline-lg text-headline-sm font-extrabold text-primary tracking-tighter md:hidden">EAXIS</span>
+<div class="hidden md:flex gap-md">
+<button class="tab-btn active" id="tabDashboard">Dashboard</button>
+<button class="tab-btn" id="tabAnnual">Tabela Anual</button>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-on-surface" id="btnLayout" title="Personalizar layout">
+<span class="material-symbols-outlined">tune</span>
+</button>
+<span class="flex items-center gap-xs px-sm py-xs rounded-full border border-outline-variant/50 bg-surface/50 text-on-surface-variant font-label-xs text-label-xs" id="lockBadge">
+<button class="flex items-center gap-xs" id="btnLock">
+<span class="w-1.5 h-1.5 rounded-full bg-success" id="lockDot"></span>
+<span class="material-symbols-outlined text-[14px]" id="lockIcon">lock_open</span>
+<span id="lockText" class="">Desbloqueado</span>
+</button>
+</span>
+<label class="relative inline-block ml-xs cursor-pointer group" id="avatarLabel" title="Alterar foto do usuário">
+<img alt="Avatar do Administrador" class="w-8 h-8 rounded-full border border-outline-variant/50 group-hover:border-primary transition-colors object-cover" id="userAvatarImg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfOxwmlBlhX0Fdt8XuP6FCPCMEnJD41wKjIJC3WR7eASI-8kF7Vz5M0edsBMb8Dhxfym2cSIrz3xUCbA6bU1_2nBgJhJhy2oUsW6rB6K3ZinfplQ1XCmZp4N7TGtPqTwfezF1eBKHGoHq8wzGLBKQe2ijL-wwfYusKmJPAUEjYIBUsCo-nF7r7NkpV2zW8QzV6L5NWIVVR6UxSaGiACwWokl6YwbmNCMcfc40V4WkRqF532I7WXBcm"/>
+<span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary text-on-primary flex items-center justify-center text-[9px] material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity" style="font-size:9px;">photo_camera</span>
+<input accept="image/*" class="hidden" id="avatarInput" type="file"/>
+</label>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<div class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop relative">
+<!-- Barra de Layout (avançado) -->
+<div class="glass-panel rounded-xl p-sm mb-md flex flex-wrap items-center gap-md" id="layoutBar" style="display:none;">
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase">Colunas</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs text-body-md" id="selCols">
+<option value="1">1</option><option value="2" selected="">2</option><option value="3">3</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase">Posição do menu</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs text-body-md" id="selSidebarPos">
+<option value="left" selected="">Esquerda</option><option value="right">Direita</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase">Largura do menu</label>
+<input class="accent-primary" id="rngSidebar" max="420" min="220" step="10" type="range" value="320"/>
+</div>
+<div class="flex gap-xs ml-auto">
+<button class="pill-btn" id="btnResetLayout">Resetar layout</button>
+<button class="pill-btn" id="btnExitLayout">Concluir</button>
+</div>
+</div>
+<div class="max-w-[1440px] mx-auto space-y-xl" id="mainRoot">
+<!-- Header & Filters -->
+<section class="flex flex-col gap-md">
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">Visão Financeira</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1" id="currentFilterLabel">Carregando...</p>
+</div>
+<!-- Filters Card -->
+<div class="glass-panel rounded-xl p-md flex flex-wrap gap-md items-end">
+<div class="flex flex-col gap-xs flex-1 min-w-[140px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Cliente</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="globalClient">
+<!-- Populated by JS -->
+</select>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[120px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Mês</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="monthSelect">
+<!-- Populated by JS -->
+</select>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[120px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Ano</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="yearSelect">
+<!-- Populated by JS -->
+</select>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[140px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Categoria</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="categorySelect">
+<!-- Populated by JS -->
+</select>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[120px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Tipo</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="typeSelect">
+<option value="ALL">Todos</option>
+<option value="Receita">Receita</option>
+<option value="Despesa">Despesa</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[120px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Futuros</label>
+<select class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="futureSelect">
+<option value="INCLUIR">Incluir na tabela</option>
+<option value="APENAS">Apenas futuros</option>
+<option value="IGNORAR">Ignorar futuros</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[120px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">De</label>
+<input class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary outline-none" id="dateFrom" type="date"/>
+</div>
+<div class="flex flex-col gap-xs flex-1 min-w-[120px]">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Até</label>
+<input class="bg-surface-container-high border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs font-body-md text-body-md focus:border-primary outline-none" id="dateTo" type="date"/>
+</div>
+</div>
+</section>
+<!-- View Dashboard -->
+<div class="view-section active" id="viewDashboard">
+<!-- Dashboard Grid (Bento Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-min">
+<!-- Painel de Tendência (Line Chart) -->
+<div class="md:col-span-8 glass-panel rounded-xl p-lg flex flex-col gap-md" style="min-height: 380px;">
+<div class="flex justify-between items-center">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Receitas x Despesas por mês (realizados)</h3>
+</div>
+<div class="flex-1 w-full relative overflow-hidden flex items-end justify-between">
+<canvas id="chartTrendDashboard"></canvas>
+</div>
+</div>
+<!-- Painel de Distribuição (Donut Chart) -->
+<div class="md:col-span-4 glass-panel rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Distribuição por Categoria</h3>
+</div>
+<div class="flex flex-col items-center gap-md" id="catWrap">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<canvas id="chartCategory"></canvas>
+</div>
+<!-- Legend -->
+<div class="w-full flex flex-col gap-xs mt-sm max-h-[200px] overflow-y-auto pr-xs" id="catLegend">
+<!-- Populated by JS -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- View Annual (Table) -->
+<div class="view-section" id="viewAnnual">
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md mb-lg" id="cardsRoot">
+<div class="glass-panel rounded-xl p-md">
+<div class="text-label-xs text-on-surface-variant uppercase mb-1">Receitas (realizadas)</div>
+<div class="text-kpi-value font-bold text-success" id="kpiReceitas">R$ 0,00</div>
+</div>
+<div class="glass-panel rounded-xl p-md">
+<div class="text-label-xs text-on-surface-variant uppercase mb-1">Despesas (realizadas)</div>
+<div class="text-kpi-value font-bold text-error" id="kpiDespesas">R$ 0,00</div>
+</div>
+<div class="glass-panel rounded-xl p-md">
+<div class="text-label-xs text-on-surface-variant uppercase mb-1">Saldo</div>
+<div class="text-kpi-value font-bold text-on-surface" id="kpiSaldo">R$ 0,00</div>
+</div>
+<div class="glass-panel rounded-xl p-md">
+<div class="text-label-xs text-on-surface-variant uppercase mb-1">Futuros (planejamento)</div>
+<div class="text-kpi-value font-bold text-on-surface-variant" id="kpiFuturos">R$ 0,00</div>
+</div>
+</div>
+<div class="mb-md flex justify-end">
+<button class="bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30 px-md py-xs rounded-lg font-label-sm text-label-sm transition-colors" id="btnAutozirarFuturos">
+                                Autozirar futuros visíveis
+                            </button>
+</div>
+<!-- Table -->
+<div class="glass-panel rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Lançamentos</h3>
+<div class="overflow-x-auto rounded-lg border border-outline-variant/30 max-h-[500px]">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-highest/80 backdrop-blur-md sticky top-0 z-10">
+<tr>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Data</th>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Cliente</th>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Tipo</th>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Categoria</th>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Descrição</th>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30 text-right">Valor</th>
+<th class="p-sm font-label-xs text-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30 text-center">Ações</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-[13px]" id="tbodyLaunches">
+<!-- Populated by JS -->
+</tbody>
+</table>
+</div>
+</div>
+<!-- Resumo por Categoria e por Mês -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="glass-panel rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Resumo por Categoria</h3>
+<div class="overflow-x-auto rounded-lg border border-outline-variant/30 max-h-[300px]">
+<table class="w-full text-left border-collapse">
+<tbody class="font-body-md text-[13px]" id="tbodyCategorySummary"></tbody>
+</table>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-lg flex flex-col gap-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Resumo por Mês</h3>
+<div class="overflow-x-auto rounded-lg border border-outline-variant/30 max-h-[300px]">
+<table class="w-full text-left border-collapse">
+<tbody class="font-body-md text-[13px]" id="tbodyMonthSummary"></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<footer class="text-center py-md text-on-surface-variant font-label-xs text-label-xs opacity-70">
+                        Painel EAXIS Enterprise — Visualize, analise e decida com precisão. Dados salvos localmente.
+                    </footer>
+</div>
+</div>
+</main>
+</div>
+<!-- MODAL LANÇAMENTO -->
+<div class="modal" id="modalLaunch">
+<div class="modal-box">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/30 pb-sm">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" id="launchModalTitle">Novo Lançamento</h3>
+<button class="text-on-surface-variant hover:text-error" id="btnCloseLaunch">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="modal-grid">
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Data</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fDate" type="date">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Cliente</label>
+<select class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fClient"></select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Tipo</label>
+<select class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fType">
+<option value="Receita">Receita</option>
+<option value="Despesa">Despesa</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Categoria</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fCategory" list="categorySuggestions" placeholder="Escolha ou digite..." type="text">
+<datalist id="categorySuggestions"></datalist>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Lançamento Futuro?</label>
+<select class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fFuturo">
+<option value="nao">Não</option>
+<option value="sim">Sim (boleto a vencer)</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Vencimento</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fVencimento" type="date">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Descrição</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fDesc" placeholder="Ex: Mensalidade..." type="text">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Valor (R$)</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fValue" min="0" step="0.01" type="number">
+</div>
+<div class="flex flex-col gap-xs full">
+<label class="font-label-xs text-on-surface-variant uppercase">Observações</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="fObs" placeholder="Ex: Pago via PIX" type="text">
+</div>
+</div>
+<div class="mt-lg flex justify-end gap-sm">
+<button class="bg-primary text-on-primary font-label-sm px-md py-xs rounded-lg shadow-md hover:brightness-110 transition-all" id="btnSaveLaunch">Salvar</button>
+</div>
+</div>
+</div>
+<!-- MODAL CLIENTE -->
+<div class="modal" id="modalClient">
+<div class="modal-box max-w-[600px]">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/30 pb-sm">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface" id="clientModalTitle">Novo Cliente</h3>
+<button class="text-on-surface-variant hover:text-error" id="btnCloseClient">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="modal-grid">
+<div class="flex flex-col gap-xs full">
+<label class="font-label-xs text-on-surface-variant uppercase">Nome</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="cName" type="text">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Documento</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="cDoc" type="text">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Contato</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="cContact" type="text">
+</div>
+</div>
+<div class="mt-lg flex justify-end gap-sm">
+<button class="bg-primary text-on-primary font-label-sm px-md py-xs rounded-lg shadow-md hover:brightness-110 transition-all" id="btnSaveClient">Salvar Cliente</button>
+</div>
+</div>
+</div>
+<!-- MODAL PIN -->
+<div class="modal" id="modalPin">
+<div class="modal-box max-w-[400px]">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/30 pb-sm">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">PIN Administrador</h3>
+<button class="text-on-surface-variant hover:text-error" id="btnClosePin">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-xs mt-md">
+<label class="font-label-xs text-on-surface-variant uppercase">PIN</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="pinInput" maxlength="8" type="password">
+<div class="text-[11px] text-on-surface-variant mt-1">Use o PIN para bloquear/desbloquear ações críticas (padrão 1234).</div>
+</div>
+<div class="mt-lg flex justify-end gap-sm">
+<button class="pill-btn" id="btnChangePin">Trocar PIN</button>
+<button class="bg-primary text-on-primary font-label-sm px-md py-xs rounded-lg shadow-md hover:brightness-110 transition-all" id="btnPinOk">Confirmar</button>
+</div>
+</div>
+</div>
+<!-- MODAL HISTÓRICO -->
+<div class="modal" id="modalHistory">
+<div class="modal-box w-full max-w-[1000px]">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/30 pb-sm">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Histórico de Alterações</h3>
+<button class="text-on-surface-variant hover:text-error" id="btnCloseHistory">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">De</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="hFrom" type="date">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Até</label>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="hTo" type="date">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Ação</label>
+<select class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="hAction">
+<option value="ALL">Todas</option>
+<option value="ADD">ADD</option>
+<option value="EDIT">EDIT</option>
+<option value="DELETE">DELETE</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-xs text-on-surface-variant uppercase">Cliente</label>
+<select class="bg-surface-container border border-outline-variant/50 text-on-surface rounded-lg px-sm py-xs focus:border-primary outline-none" id="hClient"></select>
+</div>
+</div>
+<div class="flex justify-end mb-md">
+<button class="bg-surface-variant text-on-surface px-sm py-xs rounded-lg font-label-sm text-label-sm border border-outline-variant/30 hover:bg-surface-container-highest" id="btnClearHistoryFilter">Limpar Filtros</button>
+</div>
+<div class="overflow-x-auto rounded-lg border border-outline-variant/30 max-h-[400px]">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-highest/80 backdrop-blur-md sticky top-0">
+<tr>
+<th class="p-sm font-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Quando</th>
+<th class="p-sm font-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Ação</th>
+<th class="p-sm font-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Cliente</th>
+<th class="p-sm font-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Tipo</th>
+<th class="p-sm font-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30">Categoria</th>
+<th class="p-sm font-label-xs text-on-surface-variant uppercase border-b border-outline-variant/30 text-right">Valor</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-[13px]" id="tbodyHistory"></tbody>
+</table>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-sm" id="historyHint">Carregando...</div>
+</div>
+</div>
+  <script src="js/business-logic.js"></script>
+
+  <!-- Ajustes de UI adicionais (não fazem parte da lógica de negócio) -->
+  <script src="js/ui-extras.js"></script>
+
+</body></html>

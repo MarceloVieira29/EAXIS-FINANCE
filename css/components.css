@@ -1,0 +1,200 @@
+        /* Variáveis usadas por trechos do script original (cores de saldo positivo/negativo) */
+        :root { --good: #41d19c; --bad: #ff5b6f; }
+        html.light { --good: #16a34a; --bad: #dc2626; }
+
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #424959; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8291b0; }
+        
+        /* Subtle ambient glow */
+        .ambient-glow {
+            background: radial-gradient(circle at 20% -10%, rgba(82, 141, 255, 0.15), transparent 50%),
+                        radial-gradient(circle at 80% 110%, rgba(65, 209, 156, 0.1), transparent 50%);
+        }
+        
+        .glass-panel {
+            background: rgba(23, 31, 51, 0.78);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 18px 45px rgba(0,0,0,.25);
+        }
+
+        /* Light mode overrides for glass panels */
+        html.light .ambient-glow {
+            background: radial-gradient(circle at 20% -10%, rgba(82, 141, 255, 0.1), transparent 50%),
+                        radial-gradient(circle at 80% 110%, rgba(65, 209, 156, 0.05), transparent 50%);
+            background-color: #f1f5f9;
+        }
+        
+        html.light .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,.05);
+            color: #0b1326;
+        }
+
+        html.light .bg-surface-container { background-color: #ffffff; }
+        html.light .bg-surface-container-high { background-color: #f8fafc; }
+        html.light .bg-surface-container-highest { background-color: #f1f5f9; }
+        html.light .bg-surface-container-low { background-color: #ffffff; }
+        html.light .text-on-surface { color: #0f172a; }
+        html.light .text-on-surface-variant { color: #475569; }
+        html.light .border-white\/8 { border-color: rgba(0,0,0,0.1); }
+        html.light .border-outline-variant\/50 { border-color: rgba(0,0,0,0.15); }
+        html.light .border-outline-variant\/30 { border-color: rgba(0,0,0,0.1); }
+        html.light .border-outline-variant\/20 { border-color: rgba(0,0,0,0.05); }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.68);
+            display: none; align-items: center; justify-content: center;
+            padding: 16px; z-index: 99;
+            backdrop-filter: blur(6px);
+        }
+        .modal.open { display: flex; }
+        .modal-box {
+            width: min(920px, 100%);
+            background: rgba(23, 31, 51, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 26px 80px rgba(0,0,0,.5);
+            padding: 24px;
+        }
+        html.light .modal-box {
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 22px 70px rgba(0,0,0,.15);
+            color: #0f172a;
+        }
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+        .modal-grid .full { grid-column: 1 / -1; }
+        
+        .client-item {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 10px 12px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 8px; cursor: pointer; transition: 0.2s;
+        }
+        .client-item:hover { border-color: var(--c-primary); background: rgba(82, 141, 255, 0.05); }
+        .client-item.active { border-color: var(--c-primary); background: rgba(82, 141, 255, 0.1); }
+        
+        html.light .client-item {
+            border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
+        }
+        html.light .client-item:hover { background: rgba(82, 141, 255, 0.05); }
+        html.light .client-item.active { background: rgba(82, 141, 255, 0.1); }
+
+        .pill-btn {
+            font-size: 11px; padding: 4px 8px; border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.15); background: transparent;
+            cursor: pointer; transition: 0.15s; color: var(--c-on-surface-variant);
+        }
+        .pill-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
+        .pill-btn.danger:hover { border-color: var(--c-error); color: var(--c-error); }
+        
+        html.light .pill-btn { border-color: rgba(0,0,0,0.15); color: #475569; }
+
+        /* Classes reais geradas pelo script (renderização da lista de clientes) */
+        .client {
+            display: flex; flex-direction: column; gap: 8px;
+            padding: 10px 12px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 8px; cursor: pointer; transition: 0.2s;
+        }
+        .client:hover { border-color: var(--c-primary); background: rgba(82, 141, 255, 0.05); }
+        .client.active { border-color: var(--c-primary); background: rgba(82, 141, 255, 0.1); }
+        .client .name { font-size: 13px; font-weight: 600; color: var(--c-on-surface); line-height: 1.2; }
+        .client .meta { font-size: 11px; color: var(--c-on-surface-variant); line-height: 1.2; margin-top: 1px; }
+        html.light .client { border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02); }
+        html.light .client:hover { background: rgba(82, 141, 255, 0.05); }
+        html.light .client.active { background: rgba(82, 141, 255, 0.1); }
+
+        .clientBtns { display: flex; flex-direction: row; gap: 6px; width: 100%; }
+        .pill {
+            flex: 1; text-align: center;
+            font-size: 10px; font-weight: 600; padding: 5px 6px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04);
+            cursor: pointer; transition: 0.15s; color: var(--c-on-surface-variant);
+            white-space: nowrap;
+        }
+        .pill:hover { border-color: var(--c-primary); color: var(--c-primary); background: rgba(82, 141, 255, 0.1); }
+        .pill.danger { color: #fca5a5; border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.06); }
+        .pill.danger:hover { border-color: var(--c-error); color: var(--c-error); background: rgba(239,68,68,0.15); }
+        html.light .pill { border-color: rgba(0,0,0,0.15); color: #475569; background: rgba(0,0,0,0.02); }
+        html.light .pill.danger { color: #dc2626; border-color: rgba(220,38,38,0.3); background: rgba(220,38,38,0.05); }
+
+        /* Classes reais geradas pelo script para a tabela de Lançamentos */
+        td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+        td.num.rec { color: var(--c-success); }
+        td.num.des { color: var(--c-error); }
+        .descCell { white-space: normal; word-break: break-word; max-width: 320px; line-height: 1.3; }
+        .muted { color: var(--c-on-surface-variant); }
+
+        .obsIcon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 16px; height: 16px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.04);
+            color: var(--c-on-surface-variant);
+            font-weight: 800; font-size: 10px;
+            margin-left: 6px; cursor: help; user-select: none; vertical-align: middle;
+        }
+        html.light .obsIcon { border-color: rgba(0,0,0,0.15); background: rgba(0,0,0,0.03); }
+
+        .tag {
+            display: inline-block; padding: 3px 10px; border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.15);
+            font-size: 10px; font-weight: 700; letter-spacing: .03em; white-space: nowrap;
+        }
+        .tag.rec { background: rgba(65,209,156,0.14); color: var(--c-success); border-color: rgba(65,209,156,0.4); }
+        .tag.des { background: rgba(255,91,111,0.14); color: var(--c-error); border-color: rgba(255,91,111,0.4); }
+        html.light .tag.rec { background: rgba(22,163,74,0.12); border-color: rgba(22,163,74,0.4); }
+        html.light .tag.des { background: rgba(220,38,38,0.12); border-color: rgba(220,38,38,0.4); }
+
+        .btnTable {
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.03);
+            color: var(--c-on-surface-variant);
+            border-radius: 999px; padding: 4px 10px;
+            font-size: 10px; font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+            transition: 0.15s;
+        }
+        .btnTable:hover { border-color: var(--c-primary); color: var(--c-primary); background: rgba(82,141,255,0.08); }
+        .btnTable.danger { color: #fca5a5; border-color: rgba(239,68,68,0.35); }
+        .btnTable.danger:hover { border-color: var(--c-error); color: var(--c-error); background: rgba(239,68,68,0.12); }
+        .btnTable.primary { background: rgba(65,209,156,0.12); color: var(--c-success); border-color: rgba(65,209,156,0.4); }
+        .btnTable.primary:hover { background: rgba(65,209,156,0.22); }
+        html.light .btnTable { border-color: rgba(0,0,0,0.15); background: rgba(0,0,0,0.02); color: #475569; }
+        html.light .btnTable.danger { color: #dc2626; border-color: rgba(220,38,38,0.3); }
+        html.light .btnTable.primary { background: rgba(22,163,74,0.1); border-color: rgba(22,163,74,0.4); color: #16a34a; }
+
+        .tab-btn {
+            padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1);
+            background: transparent; color: var(--c-on-surface-variant);
+            font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--c-primary); color: var(--c-on-primary);
+            border-color: transparent;
+        }
+        html.light .tab-btn { border-color: rgba(0,0,0,0.15); }
+        html.light .tab-btn.active { background: #0059c6; color: #ffffff; }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+        
+        .hidden-sys { display: none !important; }
+
+        /* Indicador de bloqueio (lockDot) */
+        #lockDot { background-color: var(--c-success); transition: background-color .2s; }
+        #lockDot.locked { background-color: var(--c-error); }
+
+        /* Botão de layout (btnLayout) ativo */
+        #btnLayout.active { color: var(--c-primary); }
